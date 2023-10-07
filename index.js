@@ -11,7 +11,7 @@ app.use(morgan('combined', {stream: accessLogStream}));
 
 app.use('/public', express.static('public'));
 
-app.get('/movies', (req, res) => {
+app.get('/topMovies', (req, res) => {
     const topMovies = [
         {
             name: 'The Hobbit: An Unexpected Journey',
@@ -61,6 +61,39 @@ app.get('/movies', (req, res) => {
 
     res.json(topMovies)
 })
+
+app.get('/movies', (req, res) => {
+    res.send('Successful GET request returning data on all the movies');
+});
+
+app.get('/movies/:title', (req, res) => {
+    res.send(`Successful GET request returning data on the movie ${req.params.title}`);
+});
+
+app.get('/genre/:genre', (req, res) => {
+    res.send(`Successful GET request returning data on the movie ${req.params.genre}`);
+});
+
+app.post('/user', (req, res) => {
+    res.send(`Successful POST request for new user to registar`);
+});
+
+app.post('/user/info', (req, res) => {
+    res.send(`Successful POST request for user to update their user info `);
+});
+
+app.put('/user/favorites/:movie_title', (req, res) => {
+    res.send(`Successful PUT a request to add a movie to user favorite list  ${req.params.movie_title}`);
+});
+
+app.delete('/user/favorites/:movie_title', (req, res) => {
+    res.send(`Successful PUT a request to delete a movie from user favorite list  ${req.params.movie_title}`);
+});
+
+app.delete('/user', (req, res) => {
+    res.send(`Successful POST request for user to deregister `);
+});
+
 app.get('/', (req, res) => {
     res.send('Nice try.')
 })

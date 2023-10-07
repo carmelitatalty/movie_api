@@ -1,14 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Movies</title>
-</head>
-<body>
+    <link rel="stylesheet" href="documentation.css">
+  </head>
+  <body>
     <header>My Movies</header>
-    Build a server-side component of a "movies" web application. It should allow a user to search a verity 
-    of movies, genres etc. and create a list of favorite movies.
-</body>
-</html>
+    Build a server-side component of a "movies" web application. It should allow
+    a user to search a verity of movies, genres etc. and create a list of
+    favorite movies.
 
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>URL</th>
+          <th>HTTP method</th>
+          <th>Request body data format</th>
+          <th>Reponse body data format</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Return a list of ALL movies to the user</td>
+          <td>/movies</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data about the movies
+            
+            <pre class="json_data">
+[
+    {
+        id: 1, 
+        title: "My Favorite Movie", 
+        description: "This is a movie that has a really good plot." 
+        director: { 
+            id: 1, 
+            name: "John Doe"
+        } 
+    },
+    {
+        id: 2, 
+        title: "My Other Favorite Movie", 
+        description: "This is a movie that has a really good director." 
+        director: { 
+            id: 2, 
+            name: "Jane Doe"
+        } 
+    }
+]
+                            </pre>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Return data (description, genre, director, image URL, whether it’s
+            featured or not) about a single movie by title to the user
+          </td>
+          <td>/movies/[title]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            A JSON object holding data about the movie.
+            <pre class="json_data">
+{
+    id: 1, 
+    title: "My Favorite Movie", 
+    description: "This is a movie that has a really good plot." 
+    director: { 
+        id: 1, 
+        name: "John Doe"
+    } 
+}
+            </pre>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Return data about a genre (description) by name/title (e.g.,
+            “Thriller”)
+          </td>
+          <td>/genre/[genre]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            A JSON object holding list of movies for a genre.
+            <pre class="json_data">
+[
+    { 
+        id: 1, 
+        title: "My Favorite Movie" 
+    },
+    { 
+        id: 2, 
+        title: "My Other Favorite Movie" 
+    }
+]
+            </pre></td>
+        </tr>
+        <tr>
+          <td>Allow new users to register</td>
+          <td>/user</td>
+          <td>POST</td>
+          <td>
+            A JSON object holding data about a single user.
+            <pre class="json_data">
+{ 
+    username: "myusername", 
+    email: "myusername@myemail.com" 
+}
+            </pre>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Allow users to update their user info (username)</td>
+          <td>/user/info</td>
+          <td>POST</td>
+          <td>
+            A JSON object holding data about a single user.
+            <pre class="json_data">
+{ 
+    username: "myusername", 
+    email: "myusername@myemail.com" 
+}
+            </pre>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            Allow users to add a movie to their list of favorites (showing only
+            a text that a movie has been added—more on this later)
+          </td>
+          <td>/user/favorites/[movie_title]</td>
+          <td>PUT</td>
+          <td>None</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            Allow users to remove a movie from their list of favorites (showing
+            only a text that a movie has been removed—more on this later)
+          </td>
+          <td>/user/favorites/[movie_title]</td>
+          <td>DELETE</td>
+          <td>None</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            Allow existing users to deregister (current user) (showing only a
+            text that a user email has been removed—more on this later)
+          </td>
+          <td>/user</td>
+          <td>DELETE</td>
+          <td>None</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
