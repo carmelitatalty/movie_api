@@ -31,26 +31,41 @@
           <td>A JSON object holding data about the movies
             
             <pre class="json_data">
-[
-    {
-        id: 1, 
-        title: "My Favorite Movie", 
-        description: "This is a movie that has a really good plot." 
-        director: { 
-            id: 1, 
-            name: "John Doe"
-        } 
-    },
-    {
-        id: 2, 
-        title: "My Other Favorite Movie", 
-        description: "This is a movie that has a really good director." 
-        director: { 
-            id: 2, 
-            name: "Jane Doe"
-        } 
-    }
-]
+              [
+              {
+                  "Genre": {
+                      "Name": "Comedy",
+                      "Description": "Makes you laugh."
+                  },
+                  "Director": {
+                      "Name": "Zach Braff",
+                      "Bio": "Actor Producer and Director."
+                  },
+                  "Actors": [],
+                  "_id": "6577e180e528d5c99dbee726",
+                  "Title": "Going in Style",
+                  "Description": "Retirees take back what was taken from them.",
+                  "ImagePath": "goinginstyle.png",
+                  "Featured": true
+              },
+              {
+                  "Genre": {
+                      "Name": "Drama",
+                      "Description": "Emotional or unexpected series of events in a serious tone"
+                  },
+                  "Director": {
+                      "Name": "Vincent Ward",
+                      "Bio": "Director writer and Actor.",
+                      "Birth": "1956"
+                  },
+                  "Actors": [],
+                  "_id": "6577e180e528d5c99dbee727",
+                  "Title": "What Dreams May Come",
+                  "Description": "Story of soulmates dealing with tradegy suicide and love.",
+                  "ImagePath": "whatdreamsmaycome.png",
+                  "Featured": false
+              }
+          ]
                             </pre>
           </td>
         </tr>
@@ -65,15 +80,25 @@
           <td>
             A JSON object holding data about the movie.
             <pre class="json_data">
-{
-    id: 1, 
-    title: "My Favorite Movie", 
-    description: "This is a movie that has a really good plot." 
-    director: { 
-        id: 1, 
-        name: "John Doe"
-    } 
-}
+[
+  {
+      "Genre": {
+          "Name": "Comedy",
+          "Description": "Makes you laugh."
+      },
+      "Director": {
+          "Name": "Zach Braff",
+          "Bio": "Actor Producer and Director."
+      },
+      "Actors": [],
+      "_id": "6577e180e528d5c99dbee726",
+      "Title": "Going in Style",
+      "Description": "Retirees take back what was taken from them.",
+      "ImagePath": "goinginstyle.png",
+      "Featured": true
+  }
+]
+
             </pre>
           </td>
         </tr>
@@ -89,14 +114,41 @@
             A JSON object holding list of movies for a genre.
             <pre class="json_data">
 [
-    { 
-        id: 1, 
-        title: "My Favorite Movie" 
+{
+    "Genre": {
+        "Name": "Drama",
+        "Description": "Emotional or unexpected series of events in a serious tone"
     },
-    { 
-        id: 2, 
-        title: "My Other Favorite Movie" 
-    }
+    "Director": {
+        "Name": "Vincent Ward",
+        "Bio": "Director writer and Actor.",
+        "Birth": "1956"
+    },
+    "Actors": [],
+    "_id": "6577e180e528d5c99dbee727",
+    "Title": "What Dreams May Come",
+    "Description": "Story of soulmates dealing with tradegy suicide and love.",
+    "ImagePath": "whatdreamsmaycome.png",
+    "Featured": false
+},
+{
+    "Genre": {
+        "Name": "Drama",
+        "Description": "Emotional or unexpected series of events in a serious tone
+    },
+    "Director": {
+        "Name": "Denis Villeneuve",
+        "Bio": "French Canadian director and writer",
+        "Birth": "1967"
+    },
+    "Actors": [],
+    "_id": "6577e181e528d5c99dbee72f",
+    "Title": "Dune",
+    "Description": "A noble house is force to move and in the process appears to be destoryed",
+    "ImagePath": "dune.png",
+    "Featured": true
+}
+
 ]
             </pre></td>
         </tr>
@@ -107,10 +159,13 @@
           <td>
             A JSON object holding data about a single user.
             <pre class="json_data">
-{ 
-    username: "myusername", 
-    email: "myusername@myemail.com" 
-}
+              {
+                "Username": "user20",
+                "Password": "myPassword",
+                "Email": "user20@email.com",
+                "Birthday": "2000-01-15"
+              
+              }
             </pre>
           </td>
           <td></td>
@@ -122,10 +177,13 @@
           <td>
             A JSON object holding data about a single user.
             <pre class="json_data">
-{ 
-    username: "myusername", 
-    email: "myusername@myemail.com" 
-}
+              {
+                "_id": "657946e5c14cadff8211164f",
+                "Username": "user20",
+                "Password": "mypassword1",
+                "Email": "user20@email.com",
+                "Birthday": "2000-01-15"
+            }
             </pre>
           </td>
           <td></td>
@@ -159,6 +217,68 @@
           <td>DELETE</td>
           <td>None</td>
           <td></td>
+        </tr>
+        <tr>
+          <td>Get top featured movies</td>
+          <td>/topMovies</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            <pre class="json_data">
+              
+              [
+              {
+                  "Genre": {
+                      "Name": "Comedy",
+                      "Description": "Makes you laugh."
+                  },
+                  "Director": {
+                      "Name": "Zach Braff",
+                      "Bio": "Actor Producer and Director."
+                  },
+                  "Actors": [],
+                  "_id": "6577e180e528d5c99dbee726",
+                  "Title": "Going in Style",
+                  "Description": "Retirees take back what was taken from them.",
+                  "ImagePath": "goinginstyle.png",
+                  "Featured": true
+              },
+              {
+                  "Genre": {
+                      "Name": "Fantasy",
+                      "Description": "Fantastical events."
+                  },
+                  "Director": {
+                      "Name": "Peter Jackson",
+                      "Bio": "Known for directing fantasy movies adapted from books by JRR Tolkein and King Kong",
+                      "Birth": "1961"
+                  },
+                  "Actors": [],
+                  "_id": "6577e180e528d5c99dbee728",
+                  "Title": "The Lord of the Rings: The Fellowship of the Ring",
+                  "Description": "A magical ring with dark mythical powers is transported by a group of companions as the start of a quest to destroy the ring.",
+                  "ImagePath": "lotr-fellowshipofthering.png",
+                  "Featured": true
+              },
+              {
+                  "Genre": {
+                      "Name": "Drama",
+                      "Description": "Emotional or unexpected series of events in a serious tone"
+                  },
+                  "Director": {
+                      "Name": "Denis Villeneuve",
+                      "Bio": "French Canadian director and writer",
+                      "Birth": "1967"
+                  },
+                  "Actors": [],
+                  "_id": "6577e181e528d5c99dbee72f",
+                  "Title": "Dune",
+                  "Description": "A noble house is force to move and in the process appears to be destoryed",
+                  "ImagePath": "dune.png",
+                  "Featured": true
+              }
+          ]</pre>
+          </td>
         </tr>
       </tbody>
     </table>
