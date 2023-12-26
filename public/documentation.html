@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Movies</title>
+    <link rel="stylesheet" href="documentation.css">
+  </head>
+  <body>
+    <header>My Movies</header>
+    Build a server-side component of a "movies" web application. It should allow
+    a user to search a verity of movies, genres etc. and create a list of
+    favorite movies.
+
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>URL</th>
+          <th>HTTP method</th>
+          <th>Request body data format</th>
+          <th>Reponse body data format</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Return a list of ALL movies to the user</td>
+          <td>/movies</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data about the movies
+            
+            <pre class="json_data">
+              [
+              {
+                  "Genre": {
+                      "Name": "Comedy",
+                      "Description": "Makes you laugh."
+                  },
+                  "Director": {
+                      "Name": "Zach Braff",
+                      "Bio": "Actor Producer and Director."
+                  },
+                  "Actors": [],
+                  "_id": "6577e180e528d5c99dbee726",
+                  "Title": "Going in Style",
+                  "Description": "Retirees take back what was taken from them.",
+                  "ImagePath": "goinginstyle.png",
+                  "Featured": true
+              },
+              {
+                  "Genre": {
+                      "Name": "Drama",
+                      "Description": "Emotional or unexpected series of events in a serious tone"
+                  },
+                  "Director": {
+                      "Name": "Vincent Ward",
+                      "Bio": "Director writer and Actor.",
+                      "Birth": "1956"
+                  },
+                  "Actors": [],
+                  "_id": "6577e180e528d5c99dbee727",
+                  "Title": "What Dreams May Come",
+                  "Description": "Story of soulmates dealing with tradegy suicide and love.",
+                  "ImagePath": "whatdreamsmaycome.png",
+                  "Featured": false
+              }
+          ]
+                            </pre>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Return data (description, genre, director, image URL, whether it’s
+            featured or not) about a single movie by title to the user
+          </td>
+          <td>/movies/[title]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            A JSON object holding data about the movie.
+            <pre class="json_data">
+[
+  {
+      "Genre": {
+          "Name": "Comedy",
+          "Description": "Makes you laugh."
+      },
+      "Director": {
+          "Name": "Zach Braff",
+          "Bio": "Actor Producer and Director."
+      },
+      "Actors": [],
+      "_id": "6577e180e528d5c99dbee726",
+      "Title": "Going in Style",
+      "Description": "Retirees take back what was taken from them.",
+      "ImagePath": "goinginstyle.png",
+      "Featured": true
+  }
+]
+
+            </pre>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Return data about a genre (description) by name/title (e.g.,
+            “Thriller”)
+          </td>
+          <td>/genre/[genre]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            A JSON object holding list of movies for a genre.
+            <pre class="json_data">
+[
+{
+    "Genre": {
+        "Name": "Drama",
+        "Description": "Emotional or unexpected series of events in a serious tone"
+    },
+    "Director": {
+        "Name": "Vincent Ward",
+        "Bio": "Director writer and Actor.",
+        "Birth": "1956"
+    },
+    "Actors": [],
+    "_id": "6577e180e528d5c99dbee727",
+    "Title": "What Dreams May Come",
+    "Description": "Story of soulmates dealing with tradegy suicide and love.",
+    "ImagePath": "whatdreamsmaycome.png",
+    "Featured": false
+},
+{
+    "Genre": {
+        "Name": "Drama",
+        "Description": "Emotional or unexpected series of events in a serious tone
+    },
+    "Director": {
+        "Name": "Denis Villeneuve",
+        "Bio": "French Canadian director and writer",
+        "Birth": "1967"
+    },
+    "Actors": [],
+    "_id": "6577e181e528d5c99dbee72f",
+    "Title": "Dune",
+    "Description": "A noble house is force to move and in the process appears to be destoryed",
+    "ImagePath": "dune.png",
+    "Featured": true
+}
+
+]
+            </pre></td>
+        </tr>
+        <tr>
+          <td>Allow new users to register</td>
+          <td>/user</td>
+          <td>POST</td>
+          <td>
+            A JSON object holding data about a single user.
+            <pre class="json_data">
+              {
+                "Username": "user20",
+                "Password": "myPassword",
+                "Email": "user20@email.com",
+                "Birthday": "2000-01-15"
+              
+              }
+            </pre>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Allow users to update their user info (username)</td>
+          <td>/user/info</td>
+          <td>POST</td>
+          <td>
+            A JSON object holding data about a single user.
+            <pre class="json_data">
+              {
+                "_id": "657946e5c14cadff8211164f",
+                "Username": "user20",
+                "Password": "mypassword1",
+                "Email": "user20@email.com",
+                "Birthday": "2000-01-15"
+            }
+            </pre>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            Allow users to add a movie to their list of favorites (showing only
+            a text that a movie has been added—more on this later)
+          </td>
+          <td>/user/favorites/[movie_title]</td>
+          <td>PUT</td>
+          <td>None</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            Allow users to remove a movie from their list of favorites (showing
+            only a text that a movie has been removed—more on this later)
+          </td>
+          <td>/user/favorites/[movie_title]</td>
+          <td>DELETE</td>
+          <td>None</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            Allow existing users to deregister (current user) (showing only a
+            text that a user email has been removed—more on this later)
+          </td>
+          <td>/user</td>
+          <td>DELETE</td>
+          <td>None</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Get top featured movies</td>
+          <td>/topMovies</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            <pre class="json_data">
+              
+              [
+              {
+                  "Genre": {
+                      "Name": "Comedy",
+                      "Description": "Makes you laugh."
+                  },
+                  "Director": {
+                      "Name": "Zach Braff",
+                      "Bio": "Actor Producer and Director."
+                  },
+                  "Actors": [],
+                  "_id": "6577e180e528d5c99dbee726",
+                  "Title": "Going in Style",
+                  "Description": "Retirees take back what was taken from them.",
+                  "ImagePath": "goinginstyle.png",
+                  "Featured": true
+              },
+              {
+                  "Genre": {
+                      "Name": "Fantasy",
+                      "Description": "Fantastical events."
+                  },
+                  "Director": {
+                      "Name": "Peter Jackson",
+                      "Bio": "Known for directing fantasy movies adapted from books by JRR Tolkein and King Kong",
+                      "Birth": "1961"
+                  },
+                  "Actors": [],
+                  "_id": "6577e180e528d5c99dbee728",
+                  "Title": "The Lord of the Rings: The Fellowship of the Ring",
+                  "Description": "A magical ring with dark mythical powers is transported by a group of companions as the start of a quest to destroy the ring.",
+                  "ImagePath": "lotr-fellowshipofthering.png",
+                  "Featured": true
+              },
+              {
+                  "Genre": {
+                      "Name": "Drama",
+                      "Description": "Emotional or unexpected series of events in a serious tone"
+                  },
+                  "Director": {
+                      "Name": "Denis Villeneuve",
+                      "Bio": "French Canadian director and writer",
+                      "Birth": "1967"
+                  },
+                  "Actors": [],
+                  "_id": "6577e181e528d5c99dbee72f",
+                  "Title": "Dune",
+                  "Description": "A noble house is force to move and in the process appears to be destoryed",
+                  "ImagePath": "dune.png",
+                  "Featured": true
+              }
+          ]</pre>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
