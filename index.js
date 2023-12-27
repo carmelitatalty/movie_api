@@ -7,13 +7,29 @@ const express = require('express'),
 
 const mongoose = require('mongoose');
 const Models = require('./models.js');
+const { check, validationResult } = require('express-validator');
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+const cors = require('cors');
+app.use(cors());
+// let allowed Origins = ['http://localhost:8080', 'http://testsite.com'];
+// app.use(cors({
+//   origin: (origin, callback)
+//   =>{
+//     if(!origin) return callback(null, true);
+//     if(allowedOrigins.indexOf(origin) === -1){
+//       let message = 'The CORS policy for this application doesn\'t allow access from origin' + origin;
+//       return callback(new Error(message ), false);
+//     }
+//     return callback(null, true);
+//   }
+// }));
 let auth = require('./auth.js')(app);
 const passport = require('passport');
 require('./passport.js');
+
 
 mongoose.connect('mongodb://127.0.0.1:27017/movieflix', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -76,7 +92,17 @@ app.get('/genre/:genre'
 
 
     app.post('/users'
-    , async (req, res) => {
+    ,[
+      check('Username', 'Username is required').isLength({min: 5}),
+      check('Username', 'Username contains non alphanumric characters - not allowed.').isAlphanumeric(),
+      check('Password', 'Password is required').not().isEmpty(),
+      check('Email', 'Email does not appear to be valid').isEmail()
+    ], async (req, res) => {
+      let errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array()});
+      }
+      let hashPassword = Users.hashPassword(req.body.Password);
         await Users.findOne({ Username: req.body.Username })
           .then((user) => {
             if (user) {
@@ -85,7 +111,7 @@ app.get('/genre/:genre'
               Users
                 .create({
                   Username: req.body.Username,
-                  Password: req.body.Password,
+                  Password: hashPassword,
                   Email: req.body.Email,
                   Birthday: req.body.Birthday
                 })
@@ -104,16 +130,23 @@ app.get('/genre/:genre'
     
 
 
-    app.put('/users/:Username'
+    app.put('/users/:Username',
+    [
+      check('Username', 'Username is required').isLength({min: 5}),
+      check('Username', 'Username contains non alphanumric characters - not allowed.').isAlphanumeric(),
+      check('Password', 'Password is required').not().isEmpty(),
+      check('Email', 'Email does not appear to be valid').isEmail()
+    ]
     , passport.authenticate('jwt', { session: false })
     , async (req, res) => {
+      let hashPassword = Users.hashPassword(req.body.Password);
       if (req.user.Username != req.params.Username) {
         return res.status(400).send("Permission Denied")
       }
         await Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
           {
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday
           }
