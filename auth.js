@@ -5,6 +5,11 @@ const jwt = require('jsonwebtoken'),
 
 require('passport');
 
+/**
+ * Signs in a user and generates a 7 day JWT token.
+ * @param {*} user 
+ * @returns {string} token
+*/
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
     subject: user.Username,
@@ -15,6 +20,12 @@ let generateJWTToken = (user) => {
 
 
 
+/** Sets up the login endpoint.
+ * @async
+ * @function login
+ * @param {*} router 
+ * @returns {*} userToken
+ */
 module.exports = (router) => {
   router.post('/login', (req, res) => {
     passport.authenticate('local', { session: false }, (error, user, info) => {
