@@ -432,8 +432,8 @@ app.get('/image/:fileName', (req, response) => {
     Key: req.params.fileName
   }))
   .then((getObjectCommandOutput) => {
-    console.log(getObjectCommandOutput);
     getObjectCommandOutput.Body.transformToByteArray().then((result) => {
+      console.log(result)
       response.send(result)
     })
   })
