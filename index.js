@@ -407,12 +407,13 @@ app.get('/images', (req, res) => {
 app.post('/images', (req, res) => {
   const file = req.files.image
   const fileName = req.files.image.name
-  const tempPath = `~/tmp/${fileName}`
+  const tempPath = `/tmp/${fileName}`
   console.log(`Uploading file: ${tempPath}`)
   file.mv(tempPath, (err) => { 
     if (err) {
       console.log(err)
       res.status(500) 
+      return;
     }
     console.log(`File uploaded to temp location ${tempPath}`)
 
