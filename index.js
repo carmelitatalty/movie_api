@@ -432,7 +432,7 @@ app.get('/image/:fileName', (req, response) => {
     Key: req.params.fileName
   }))
   .then((getObjectCommandOutput) => {
-    res.set(getObjectCommandOutput);
+    response.set(getObjectCommandOutput);
   })
 })
 
