@@ -411,9 +411,10 @@ app.post('/images', (req, res) => {
   console.log(`Uploading file: ${tempPath}`)
   file.mv(tempPath, (err) => { 
     if (err) {
-
+      console.log(err)
       res.status(500) 
     }
+    console.log(`File uploaded to temp location ${tempPath}`)
 
     s3Client.send(new PutObjectCommand({Body: tempPath, Bucket: BUCKET_NAME, Key: fileName}))
     .then((putObjectResponse) => {
