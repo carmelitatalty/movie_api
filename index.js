@@ -433,10 +433,11 @@ app.get('/image/:fileName', (req, response) => {
   }))
   .then((getObjectCommandOutput) => {
     getObjectCommandOutput.Body.transformToByteArray().then((result) => {
-      console.log(result)
+      // console.log(result)
       if (req.params.fileName.endsWith('.jpg')) {
         response.contentType('image/jpeg');
         response.send(Buffer.from(result), 'binary')
+        return;
       }
       response.send(Buffer.from(result))
     })
