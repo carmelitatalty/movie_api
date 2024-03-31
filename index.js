@@ -436,7 +436,7 @@ app.get('/image/:fileName', (req, response) => {
       // console.log(result)
       if (req.params.fileName.endsWith('.jpg')) {
         response.contentType('image/jpeg');
-        response.send(Buffer.from(result), 'binary')
+        response.send(Buffer.from(result))
         return;
       }
       response.send(Buffer.from(result))
