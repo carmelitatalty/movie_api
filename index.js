@@ -9,7 +9,6 @@ const { check, validationResult } = require("express-validator");
 
 const { S3Client, ListObjectsV2Command, PutObjectCommand } = require('@aws-sdk/client-s3')
 const { S3 } = require('@aws-sdk/client-s3')
-const fs = require('fs')
 const fileUpload = require('express-fileupload')
 
 const BUCKET_NAME = 'cfmoviesite'
