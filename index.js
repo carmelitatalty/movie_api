@@ -32,7 +32,9 @@ app.use(cors());
 // }));
 
 
-app.use(fileUpload());
+app.use(fileUpload({
+  debug: true
+}));
 
 let auth = require("./auth.js")(app);
 const passport = require("passport");
@@ -406,6 +408,7 @@ app.post('/images', (req, res) => {
   const file = req.files.image
   const fileName = req.files.image.name
   const tempPath = `~/tmp/${fileName}`
+  console.log(`Uploading file: ${tempPath}`)
   file.mv(tempPath, (err) => { res.status(500) }).then(()=> {
     s3Client.send(new PutObjectCommand({Body: tempPath, Bucket: BUCKET_NAME, Key: fileName}))
     .then((putObjectResponse) => {
