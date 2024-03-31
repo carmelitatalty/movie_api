@@ -146,3 +146,7 @@
 ::1 - - [27/Dec/2023:21:00:32 +0000] "POST /users HTTP/1.1" 400 20 "-" "PostmanRuntime/7.32.1"
 ::1 - - [27/Dec/2023:21:00:41 +0000] "POST /users HTTP/1.1" 201 221 "-" "PostmanRuntime/7.32.1"
 ::1 - - [27/Dec/2023:21:01:32 +0000] "POST /users HTTP/1.1" 422 237 "-" "PostmanRuntime/7.32.1"
+127.0.0.1 - - [18/Mar/2024:02:00:22 +0000] "GET / HTTP/1.1" 200 9 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+127.0.0.1 - - [18/Mar/2024:02:00:22 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+127.0.0.1 - - [18/Mar/2024:02:50:14 +0000] "GET / HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+127.0.0.1 - - [18/Mar/2024:02:50:23 +0000] "GET / HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"

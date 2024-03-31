@@ -7,6 +7,13 @@ const mongoose = require("mongoose");
 const Models = require("./models.js");
 const { check, validationResult } = require("express-validator");
 
+const { S3Client, ListObjectsV2Command, PutObjectCommand } = require('@aws-sdk/client-s3')
+const { S3 } = require('@aws-sdk/client-s3')
+const fs = require('fs')
+const fileUpload = require('express-fileupload')
+
+const BUCKET_NAME = 'cfmoviesite'
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -24,6 +31,9 @@ app.use(cors());
 //     return callback(null, true);
 //   }
 // }));
+
+
+app.use(fileUpload());
 
 let auth = require("./auth.js")(app);
 const passport = require("passport");
@@ -376,6 +386,33 @@ app.delete(
  */
 app.get("/", (req, res) => {
   res.send("Nice try.");
+});
+
+const s3Client = new S3Client({
+  region: 'us-west-2'
+})
+
+const listObjectsParams = {
+  Bucket: BUCKET_NAME
+}
+
+app.get('/images', (req, res) => {
+  s3Client.send(new ListObjectsV2Command(listObjectsParams))
+      .then((listObjectsResponse) => {
+          res.send(listObjectsResponse)
+  })
+})
+
+app.post('/images', (req, res) => {
+  const file = req.files.image
+  const fileName = req.files.image.name
+  const tempPath = `tmp/${fileName}`
+  file.mv(tempPath, (err) => { res.status(500) })
+
+  s3Client.send(new PutObjectCommand({Body: "tempPath", Bucket: BUCKET_NAME, Key: fileName}))
+  .then((putObjectResponse) => {
+    res.send(putObjectResponse)
+  })
 });
 
 /**
