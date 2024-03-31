@@ -405,7 +405,7 @@ app.get('/images', (req, res) => {
 app.post('/images', (req, res) => {
   const file = req.files.image
   const fileName = req.files.image.name
-  const tempPath = `tmp/${fileName}`
+  const tempPath = `~/tmp/${fileName}`
   file.mv(tempPath, (err) => { res.status(500) })
 
   s3Client.send(new PutObjectCommand({Body: tempPath, Bucket: BUCKET_NAME, Key: fileName}))
