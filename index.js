@@ -433,8 +433,9 @@ app.get('/image/:fileName', (req, response) => {
   }))
   .then((getObjectCommandOutput) => {
     console.log(getObjectCommandOutput);
-
-    response.send(getObjectCommandOutput.Body.transformToWebStream());
+    getObjectCommandOutput.Body.transformToByteArray().then((result) => {
+      response.send(result)
+    })
   })
 })
 
