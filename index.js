@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const Models = require("./models.js");
 const { check, validationResult } = require("express-validator");
 
-const { S3Client, ListObjectsV2Command, PutObjectCommand } = require('@aws-sdk/client-s3')
+const { S3Client, ListObjectsV2Command, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3')
 const { S3 } = require('@aws-sdk/client-s3')
 const fileUpload = require('express-fileupload')
 
@@ -425,6 +425,16 @@ app.post('/images', (req, res) => {
     })
   })
 });
+
+app.get('/image/:fileName', (req, response) => {
+  s3Client.send(new GetObjectCommand({
+    Bucket: BUCKET_NAME,
+    Key: req.params.fileName
+  }))
+  .then((getObjectCommandOutput) => {
+    res.set(getObjectCommandOutput);
+  })
+})
 
 /**
  * Set's up error handler
