@@ -409,7 +409,12 @@ app.post('/images', (req, res) => {
   const fileName = req.files.image.name
   const tempPath = `~/tmp/${fileName}`
   console.log(`Uploading file: ${tempPath}`)
-  file.mv(tempPath, (err) => { res.status(500) }).then(()=> {
+  file.mv(tempPath, (err) => { 
+    if (err) {
+
+      res.status(500) 
+    }
+
     s3Client.send(new PutObjectCommand({Body: tempPath, Bucket: BUCKET_NAME, Key: fileName}))
     .then((putObjectResponse) => {
       res.send(putObjectResponse)
