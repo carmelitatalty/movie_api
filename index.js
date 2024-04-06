@@ -18,10 +18,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const cors = require("cors");
 app.use(cors());
-// let allowed Origins = ['http://localhost:8080', 'http://testsite.com'];
+// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 // app.use(cors({
-//   origin: (origin, callback)
-//   =>{
+//   origin: (origin, callback) =>{
 //     if(!origin) return callback(null, true);
 //     if(allowedOrigins.indexOf(origin) === -1){
 //       let message = 'The CORS policy for this application doesn\'t allow access from origin' + origin;
@@ -122,6 +121,19 @@ app.get(
       });
   }
 );
+
+app.post(
+  "/movies",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Movies.put(req.body).then(() => {
+      res.status(200).send();
+    })
+    .catch((err) => {
+      res.status(401).send();
+    });
+  }
+)
 
 /**
  * Sets up endpoint to get a Genre
