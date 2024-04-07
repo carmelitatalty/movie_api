@@ -136,7 +136,8 @@ app.post(
   "/movies",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Movies.put(req.body)
+    console.log(`Adding movie ${JSON.stringify(req.body)}`)
+    Movies.create(req.body)
       .then(() => {
         res.status(200).send();
       })
