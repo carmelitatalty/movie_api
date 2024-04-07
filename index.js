@@ -439,7 +439,7 @@ app.post('/images', (req, res) => {
     console.log(`File uploaded to temp location ${tempPath}`)
 
     const fileContent = fs.readFileSync(tempPath);
-    console.log(`Uploading file ${tempPath} with size ${fileContent.length}`)
+    console.log(`Uploading file ${tempPath} with size ${fileContent.length} to ${BUCKET_NAME} as key ${key}`)
     s3Client.send(new PutObjectCommand({Body: fileContent, Bucket: BUCKET_NAME, Key: key}))
     .then((putObjectResponse) => {
       res.send({s3Response: putObjectResponse, key: key})
