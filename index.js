@@ -7,13 +7,18 @@ const mongoose = require("mongoose");
 const Models = require("./models.js");
 const { check, validationResult } = require("express-validator");
 
-const { S3Client, ListObjectsV2Command, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3')
-const { S3 } = require('@aws-sdk/client-s3')
-const fileUpload = require('express-fileupload')
+const {
+  S3Client,
+  ListObjectsV2Command,
+  PutObjectCommand,
+  GetObjectCommand,
+} = require("@aws-sdk/client-s3");
+const { S3 } = require("@aws-sdk/client-s3");
+const fileUpload = require("express-fileupload");
 
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 
-const BUCKET_NAME = 'cfmoviesite'
+const BUCKET_NAME = "cfmoviesite";
 
 const app = express();
 app.use(express.json());
@@ -32,10 +37,11 @@ app.use(cors());
 //   }
 // }));
 
-
-app.use(fileUpload({
-  debug: true
-}));
+app.use(
+  fileUpload({
+    debug: true,
+  })
+);
 
 let auth = require("./auth.js")(app);
 const passport = require("passport");
@@ -43,10 +49,12 @@ require("./passport.js");
 
 // mongoose.connect('mongodb://localhost:27017/movieflix', { useNewUrlParser: true, useUnifiedTopology: true });
 
-mongoose.connect(process.env.CONNECTION_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).catch(error => console.log(error));
+mongoose
+  .connect(process.env.CONNECTION_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .catch((error) => console.log(error));
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
   flags: "a",
@@ -128,14 +136,15 @@ app.post(
   "/movies",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Movies.put(req.body).then(() => {
-      res.status(200).send();
-    })
-    .catch((err) => {
-      res.status(401).send();
-    });
+    Movies.put(req.body)
+      .then(() => {
+        res.status(200).send();
+      })
+      .catch((err) => {
+        res.status(401).send();
+      });
   }
-)
+);
 
 /**
  * Sets up endpoint to get a Genre
@@ -292,7 +301,7 @@ app.post(
 
 /**
  * Set's up endpoint to get all movies
- * 
+ *
  * Requires user to be logged in.
  * @async
  * @function getAllMovies
@@ -404,66 +413,83 @@ app.get("/", (req, res) => {
 });
 
 const s3Client = new S3Client({
-  region: 'us-west-2'
-})
-
-const listObjectsParams = {
-  Bucket: BUCKET_NAME
-}
-
-app.get('/images', (req, res) => {
-  s3Client.send(new ListObjectsV2Command(listObjectsParams))
-      .then((listObjectsResponse) => {
-          res.send(listObjectsResponse)
-  })
-})
-
-app.post('/images', (req, res) => {
-  const file = req.files.image
-  const fileName = req.files.image.name
-  const tempPath = `/tmp/${fileName}`
-  if (!fileName.endsWith('.png')) {
-    res.body('PNG files only').status(500);
-    return;
-  }
-
-  const key = uuidv4() + '.png';
-
-  console.log(`Uploading file: ${tempPath}`)
-  file.mv(tempPath, (err) => { 
-    if (err) {
-      console.log(err)
-      res.status(500) 
-      return;
-    }
-    console.log(`File uploaded to temp location ${tempPath}`)
-
-    const fileContent = fs.readFileSync(tempPath);
-    console.log(`Uploading file ${tempPath} with size ${fileContent.length} to ${BUCKET_NAME} as key ${key}`)
-    s3Client.send(new PutObjectCommand({Body: fileContent, Bucket: BUCKET_NAME, Key: key}))
-    .then((putObjectResponse) => {
-      res.send({s3Response: putObjectResponse, key: key})
-    })
-  })
+  region: "us-west-2",
 });
 
-app.get('/image/:fileName', (req, response) => {
-  s3Client.send(new GetObjectCommand({
-    Bucket: BUCKET_NAME,
-    Key: req.params.fileName
-  }))
-  .then((getObjectCommandOutput) => {
-    getObjectCommandOutput.Body.transformToByteArray().then((result) => {
-      // console.log(result)
-      if (req.params.fileName.endsWith('.jpg')) {
-        response.contentType('image/jpeg');
-        response.send(Buffer.from(result))
+const listObjectsParams = {
+  Bucket: BUCKET_NAME,
+};
+
+app.get("/images", (req, res) => {
+  s3Client
+    .send(new ListObjectsV2Command(listObjectsParams))
+    .then((listObjectsResponse) => {
+      res.send(listObjectsResponse);
+    });
+});
+
+app.post(
+  "/images",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const file = req.files.image;
+    const fileName = req.files.image.name;
+    const tempPath = `/tmp/${fileName}`;
+    if (!fileName.endsWith(".jpg")) {
+      res.body("JPG files only").status(500);
+      return;
+    }
+
+    const key = uuidv4() + ".jpg";
+
+    console.log(`Uploading file: ${tempPath}`);
+    file.mv(tempPath, (err) => {
+      if (err) {
+        console.log(err);
+        res.status(500);
         return;
       }
-      response.send(Buffer.from(result))
-    })
-  })
-})
+      console.log(`File uploaded to temp location ${tempPath}`);
+
+      const fileContent = fs.readFileSync(tempPath);
+      console.log(
+        `Uploading file ${tempPath} with size ${fileContent.length} to ${BUCKET_NAME} as key ${key}`
+      );
+      s3Client
+        .send(
+          new PutObjectCommand({
+            Body: fileContent,
+            Bucket: BUCKET_NAME,
+            Key: key,
+          })
+        )
+        .then((putObjectResponse) => {
+          res.send({ s3Response: putObjectResponse, key: key });
+        });
+    });
+  }
+);
+
+app.get("/image/:fileName", (req, response) => {
+  s3Client
+    .send(
+      new GetObjectCommand({
+        Bucket: BUCKET_NAME,
+        Key: req.params.fileName,
+      })
+    )
+    .then((getObjectCommandOutput) => {
+      getObjectCommandOutput.Body.transformToByteArray().then((result) => {
+        // console.log(result)
+        if (req.params.fileName.endsWith(".jpg")) {
+          response.contentType("image/jpeg");
+          response.send(Buffer.from(result));
+          return;
+        }
+        response.send(Buffer.from(result));
+      });
+    });
+});
 
 /**
  * Set's up error handler
