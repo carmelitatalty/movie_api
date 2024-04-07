@@ -11,6 +11,8 @@ const { S3Client, ListObjectsV2Command, PutObjectCommand, GetObjectCommand } = r
 const { S3 } = require('@aws-sdk/client-s3')
 const fileUpload = require('express-fileupload')
 
+const { v4: uuidv4 } = require('uuid');
+
 const BUCKET_NAME = 'cfmoviesite'
 
 const app = express();
@@ -420,6 +422,13 @@ app.post('/images', (req, res) => {
   const file = req.files.image
   const fileName = req.files.image.name
   const tempPath = `/tmp/${fileName}`
+  if (!fileName.endsWith('.png')) {
+    res.body('PNG files only').status(500);
+    return;
+  }
+
+  const key = uuidv4() + '.png';
+
   console.log(`Uploading file: ${tempPath}`)
   file.mv(tempPath, (err) => { 
     if (err) {
@@ -431,9 +440,9 @@ app.post('/images', (req, res) => {
 
     const fileContent = fs.readFileSync(tempPath);
     console.log(`Uploading file ${tempPath} with size ${fileContent.length}`)
-    s3Client.send(new PutObjectCommand({Body: fileContent, Bucket: BUCKET_NAME, Key: fileName}))
+    s3Client.send(new PutObjectCommand({Body: fileContent, Bucket: BUCKET_NAME, Key: key}))
     .then((putObjectResponse) => {
-      res.send(putObjectResponse)
+      res.send({s3Response: putObjectResponse, key: key})
     })
   })
 });
