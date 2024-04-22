@@ -428,7 +428,7 @@ app.get("/images", (req, res) => {
       res.send(listObjectsResponse);
     }).catch((e) => {
       console.log(e);
-      res.status(400).send(e)
+      res.status(400).send(e.message)
     });
 });
 
