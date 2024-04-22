@@ -426,7 +426,7 @@ app.get("/images", (req, res) => {
     .send(new ListObjectsV2Command(listObjectsParams))
     .then((listObjectsResponse) => {
       res.send(listObjectsResponse);
-    });
+    }).catch((e) => console.log(e));
 });
 
 app.post(
