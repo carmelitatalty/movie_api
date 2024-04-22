@@ -18,7 +18,7 @@ const fileUpload = require("express-fileupload");
 
 const { v4: uuidv4 } = require("uuid");
 
-const BUCKET_NAME = "cfmoviesite";
+const BUCKET_NAME = process.env.BUCKET_NAME;
 
 const app = express();
 app.use(express.json());
