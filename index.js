@@ -48,9 +48,10 @@ const passport = require("passport");
 require("./passport.js");
 
 // mongoose.connect('mongodb://localhost:27017/movieflix', { useNewUrlParser: true, useUnifiedTopology: true });
+const CONNECTION_URI = 'mongodb://10.0.0.105/movieflix'
 
 mongoose
-  .connect(process.env.CONNECTION_URI, {
+  .connect(CONNECTION_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
