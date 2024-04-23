@@ -428,6 +428,7 @@ app.get("/images", (req, res) => {
       res.send(listObjectsResponse);
     }).catch((e) => {
       console.log(e);
+      console.log(BUCKET_NAME)
       res.status(400).send({message: e.message, bucket: BUCKET_NAME})
     });
 });
