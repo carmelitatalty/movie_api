@@ -18,7 +18,7 @@ const fileUpload = require("express-fileupload");
 
 const { v4: uuidv4 } = require("uuid");
 
-const BUCKET_NAME = process.env.BUCKET_NAME;
+// const BUCKET_NAME = process.env.BUCKET_NAME;
 
 const app = express();
 app.use(express.json());
@@ -418,7 +418,7 @@ const s3Client = new S3Client({
 });
 
 const listObjectsParams = {
-  Bucket: BUCKET_NAME,
+  Bucket: process.env.BUCKET_NAME,
 };
 
 app.get("/images", (req, res) => {
@@ -428,8 +428,8 @@ app.get("/images", (req, res) => {
       res.send(listObjectsResponse);
     }).catch((e) => {
       console.log(e);
-      console.log(BUCKET_NAME)
-      res.status(400).send({message: e.message, bucket: BUCKET_NAME})
+      console.log(process.env.BUCKET_NAME)
+      res.status(400).send({message: e.message, bucket: process.env.BUCKET_NAME})
     });
 });
 
@@ -458,13 +458,13 @@ app.post(
 
       const fileContent = fs.readFileSync(tempPath);
       console.log(
-        `Uploading file ${tempPath} with size ${fileContent.length} to ${BUCKET_NAME} as key ${key}`
+        `Uploading file ${tempPath} with size ${fileContent.length} to ${process.env.BUCKET_NAME} as key ${key}`
       );
       s3Client
         .send(
           new PutObjectCommand({
             Body: fileContent,
-            Bucket: BUCKET_NAME,
+            Bucket: process.env.BUCKET_NAME,
             Key: key,
           })
         )
@@ -479,7 +479,7 @@ app.get("/image/:fileName", (req, response) => {
   s3Client
     .send(
       new GetObjectCommand({
-        Bucket: BUCKET_NAME,
+        Bucket: process.env.BUCKET_NAME,
         Key: req.params.fileName,
       })
     )
