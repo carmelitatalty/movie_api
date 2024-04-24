@@ -439,6 +439,7 @@ app.post(
   "/images",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    res.set('Access-Control-Allow-Origin', 'http://2-6-frontend.s3-website-us-west-2.amazonaws.com');
     const file = req.files.image;
     const fileName = req.files.image.name;
     const tempPath = `/tmp/${fileName}`;
