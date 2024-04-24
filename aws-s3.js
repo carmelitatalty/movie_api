@@ -1,10 +1,10 @@
-import {
+const {
     CreateMultipartUploadCommand,
     UploadPartCommand,
     CompleteMultipartUploadCommand,
     AbortMultipartUploadCommand,
     S3Client,
-  } from "@aws-sdk/client-s3";
+  } = require("@aws-sdk/client-s3");
   
   const twentyFiveMB = 25 * 1024 * 1024;
   
