@@ -472,7 +472,7 @@ app.post(
         `Uploading file ${tempPath} with size ${fileContent.length} to ${BUCKET_NAME} as key ${key}`
       );
       try {
-        aws_s3.upload(key, tempPath).then(getObjectCommandOutput => {
+        aws_s3().upload(key, tempPath).then(getObjectCommandOutput => {
           console.log(JSON.stringify(getObjectCommandOutput));
           res.send({ s3Response: putObjectResponse, key: key });
         })
