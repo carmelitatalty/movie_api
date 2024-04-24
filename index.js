@@ -472,6 +472,7 @@ app.post(
           })
         )
         .then((putObjectResponse) => {
+          console.log(JSON.stringify(putObjectResponse))
           res.send({ s3Response: putObjectResponse, key: key });
         }).catch((e) => {
           console.log(e);
