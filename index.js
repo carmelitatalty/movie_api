@@ -472,6 +472,9 @@ app.post(
         )
         .then((putObjectResponse) => {
           res.send({ s3Response: putObjectResponse, key: key });
+        }).catch((e) => {
+          console.log(e);
+          res.status(500).send(e.message)
         });
     });
   }
