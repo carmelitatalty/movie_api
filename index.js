@@ -28,18 +28,18 @@ app.use(
   express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 })
 );
 const cors = require("cors");
-// app.use(cors());
-let allowedOrigins = ['2-6-frontend.s3-website-us-west-2.amazonaws.com'];
-app.use(cors({
-  origin: (origin, callback) =>{
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){
-      let message = 'The CORS policy for this application doesn\'t allow access from origin' + origin;
-      return callback(new Error(message ), false);
-    }
-    return callback(null, true);
-  }
-}));
+app.use(cors());
+// let allowedOrigins = ['2-6-frontend.s3-website-us-west-2.amazonaws.com'];
+// app.use(cors({
+//   origin: (origin, callback) =>{
+//     if(!origin) return callback(null, true);
+//     if(allowedOrigins.indexOf(origin) === -1){
+//       let message = 'The CORS policy for this application doesn\'t allow access from origin' + origin;
+//       return callback(new Error(message ), false);
+//     }
+//     return callback(null, true);
+//   }
+// }));
 
 app.use(
   fileUpload({

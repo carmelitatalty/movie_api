@@ -28,7 +28,7 @@ let generateJWTToken = (user) => {
  */
 module.exports = (router) => {
   router.post('/login', (req, res) => {
-    res.set('Access-Control-Allow-Origin', 'http://2-6-frontend.s3-website-us-west-2.amazonaws.com');
+    // res.set('Access-Control-Allow-Origin', 'http://2-6-frontend.s3-website-us-west-2.amazonaws.com');
     passport.authenticate('local', { session: false }, (error, user, info) => {
       if (error || !user) {
         return res.status(400).json({
