@@ -39,6 +39,7 @@ app.use(cors());
 
 app.use(
   fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
     debug: true,
   })
 );
@@ -466,7 +467,7 @@ app.post(
           new PutObjectCommand({
             Body: fileContent,
             Bucket: BUCKET_NAME,
-            Key: key,
+            Key: 'original/' + key,
           })
         )
         .then((putObjectResponse) => {
@@ -481,7 +482,29 @@ app.get("/image/:fileName", (req, response) => {
     .send(
       new GetObjectCommand({
         Bucket: BUCKET_NAME,
-        Key: req.params.fileName,
+        Key: 'original/' + req.params.fileName,
+      })
+    )
+    .then((getObjectCommandOutput) => {
+      getObjectCommandOutput.Body.transformToByteArray().then((result) => {
+        // console.log(result)
+        if (req.params.fileName.endsWith(".jpg")) {
+          response.contentType("image/jpeg");
+          response.send(Buffer.from(result));
+          return;
+        }
+        response.send(Buffer.from(result));
+      });
+    });
+});
+
+
+app.get("/thumbnail/:fileName", (req, response) => {
+  s3Client
+    .send(
+      new GetObjectCommand({
+        Bucket: BUCKET_NAME,
+        Key: 'resized/' + req.params.fileName,
       })
     )
     .then((getObjectCommandOutput) => {
