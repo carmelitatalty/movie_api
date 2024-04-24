@@ -7,6 +7,8 @@ const mongoose = require("mongoose");
 const Models = require("./models.js");
 const { check, validationResult } = require("express-validator");
 
+const aws_s3 = require('./aws-s3.js')
+
 const {
   S3Client,
   ListObjectsV2Command,
@@ -18,11 +20,13 @@ const fileUpload = require("express-fileupload");
 
 const { v4: uuidv4 } = require("uuid");
 
-const BUCKET_NAME = '2-6-images';
+const BUCKET_NAME = "2-6-images";
 
 const app = express();
 app.use(express.json({ limit: "10mb", extended: true }));
-app.use(express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 }));
+app.use(
+  express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 })
+);
 const cors = require("cors");
 app.use(cors());
 // let allowedOrigins = ['2-6-frontend.s3-website-us-west-2.amazonaws.com'];
@@ -49,7 +53,7 @@ const passport = require("passport");
 require("./passport.js");
 
 // mongoose.connect('mongodb://localhost:27017/movieflix', { useNewUrlParser: true, useUnifiedTopology: true });
-const CONNECTION_URI = 'mongodb://10.0.0.105/movieflix'
+const CONNECTION_URI = "mongodb://10.0.0.105/movieflix";
 
 mongoose
   .connect(CONNECTION_URI, {
@@ -138,7 +142,7 @@ app.post(
   "/movies",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    console.log(`Adding movie ${JSON.stringify(req.body)}`)
+    console.log(`Adding movie ${JSON.stringify(req.body)}`);
     Movies.create(req.body)
       .then(() => {
         res.status(200).send();
@@ -428,10 +432,11 @@ app.get("/images", (req, res) => {
     .send(new ListObjectsV2Command(listObjectsParams))
     .then((listObjectsResponse) => {
       res.send(listObjectsResponse);
-    }).catch((e) => {
+    })
+    .catch((e) => {
       console.log(e);
-      console.log(BUCKET_NAME)
-      res.status(400).send({message: e.message, bucket: BUCKET_NAME})
+      console.log(BUCKET_NAME);
+      res.status(400).send({ message: e.message, bucket: BUCKET_NAME });
     });
 });
 
@@ -439,7 +444,10 @@ app.post(
   "/images",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.set('Access-Control-Allow-Origin', 'http://2-6-frontend.s3-website-us-west-2.amazonaws.com');
+    res.set(
+      "Access-Control-Allow-Origin",
+      "http://2-6-frontend.s3-website-us-west-2.amazonaws.com"
+    );
     const file = req.files.image;
     const fileName = req.files.image.name;
     const tempPath = `/tmp/${fileName}`;
@@ -463,21 +471,31 @@ app.post(
       console.log(
         `Uploading file ${tempPath} with size ${fileContent.length} to ${BUCKET_NAME} as key ${key}`
       );
-      s3Client
-        .send(
-          new PutObjectCommand({
-            Body: fileContent,
-            Bucket: BUCKET_NAME,
-            Key: 'original/' + key,
-          })
-        )
-        .then((putObjectResponse) => {
-          console.log(JSON.stringify(putObjectResponse))
+      try {
+        aws_s3.upload(key, tempPath).then(getObjectCommandOutput => {
+          console.log(JSON.stringify(getObjectCommandOutput));
           res.send({ s3Response: putObjectResponse, key: key });
-        }).catch((e) => {
-          console.log(e);
-          res.status(500).send(e.message)
-        });
+        })
+        // s3Client
+        //   .send(
+        //     new PutObjectCommand({
+        //       Body: fileContent,
+        //       Bucket: BUCKET_NAME,
+        //       Key: "original/" + key,
+        //     })
+        //   )
+        //   .then((putObjectResponse) => {
+        //     console.log(JSON.stringify(putObjectResponse));
+        //     res.send({ s3Response: putObjectResponse, key: key });
+        //   })
+          .catch((e) => {
+            console.log(e);
+            res.status(500).send(e.message);
+          });
+      } catch (e) {
+        console.log(e);
+        res.status(500).send(e.message);
+      }
     });
   }
 );
@@ -487,7 +505,7 @@ app.get("/image/:fileName", (req, response) => {
     .send(
       new GetObjectCommand({
         Bucket: BUCKET_NAME,
-        Key: 'original/' + req.params.fileName,
+        Key: "original/" + req.params.fileName,
       })
     )
     .then((getObjectCommandOutput) => {
@@ -503,13 +521,12 @@ app.get("/image/:fileName", (req, response) => {
     });
 });
 
-
 app.get("/thumbnail/:fileName", (req, response) => {
   s3Client
     .send(
       new GetObjectCommand({
         Bucket: BUCKET_NAME,
-        Key: 'resized/' + req.params.fileName,
+        Key: "resized/" + req.params.fileName,
       })
     )
     .then((getObjectCommandOutput) => {
