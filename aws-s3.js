@@ -8,11 +8,11 @@ const {
   
   const twentyFiveMB = 25 * 1024 * 1024;
   
-  export const createString = (size = twentyFiveMB) => {
-    return "x".repeat(size);
-  };
+//   export const createString = (size = twentyFiveMB) => {
+//     return "x".repeat(size);
+//   };
   
-  export const upload = async (key, fileName) => {
+   const upload = async (key, fileName) => {
     const s3Client = new S3Client({});
     const bucketName = "test-bucket";
     const str = createString();
@@ -90,4 +90,6 @@ const {
     }
   };
   
-  
+  module.exports = () => {
+    return upload
+  }
