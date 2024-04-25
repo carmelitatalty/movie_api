@@ -13,9 +13,9 @@ const {
 //     return "x".repeat(size);
 //   };
   
-   const upload = async (key, tempPath) => {
+   const upload = async (key, bucketName, tempPath) => {
     const s3Client = new S3Client({});
-    const bucketName = "test-bucket";
+    // const bucketName = "test-bucket";
     // const str = createString();
     // const buffer = Buffer.from(str, "utf8");
     const fileContent = fs.readFileSync(tempPath);
