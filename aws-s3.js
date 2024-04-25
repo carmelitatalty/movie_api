@@ -105,6 +105,30 @@ const s3Client = new S3Client({
     }
   };
 
+  const uploadImage = (tempPath, bucket, key, res) => {
+    console.log(`Uploading ${tempPath} to ${bucket}/${key}`)
+    const params = {
+        Bucket: bucket,
+        Key: `original/${key}`,
+        Body: fs.createReadStream(tempPath)
+    };
+    
+    // Upload the file to S3
+    s3.upload(params, (err, data) => {
+        if (err) {
+            console.log('Error uploading file:', err);
+            if (res) {
+                res.status(500).send(err);
+            }
+        } else {
+            console.log('File uploaded successfully. File location:', data.Location);
+            if (res) {
+                res.status(200).send({data:data, key:key})
+            }
+        }
+    });
+  }
+
   const put = (fileContent, bucket, key, res) => {
     s3Client
     .send(
@@ -125,5 +149,5 @@ const s3Client = new S3Client({
   }
   
   module.exports = {
-    upload, put
+    upload, put, uploadImage
   }

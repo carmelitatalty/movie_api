@@ -477,9 +477,11 @@ app.post(
           res.status(500).send(err);
         }
         else {
+          console.log('Putting file to AWS S3')
           aws_s3.put(buffer, BUCKET_NAME, key, res)
         }
       })
+
     //   try {
     //     // aws_s3.upload(`original/${key}`, BUCKET_NAME , tempPath).then(getObjectCommandOutput => {
     //     //   console.log(JSON.stringify(getObjectCommandOutput));
