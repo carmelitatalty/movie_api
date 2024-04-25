@@ -15,7 +15,7 @@ const {
    const upload = async (key, tempPath) => {
     const s3Client = new S3Client({});
     const bucketName = "test-bucket";
-    const str = createString();
+    // const str = createString();
     // const buffer = Buffer.from(str, "utf8");
     const fileContent = fs.readFileSync(tempPath);
   
