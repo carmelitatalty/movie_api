@@ -130,12 +130,14 @@ const s3Client = new S3Client({
   }
 
   const put = (fileContent, bucket, key, res) => {
-    s3Client
+    const uploadKey = `original/${key}`
+    console.log(`Putting file to S3 bucket ${bucket} with key ${uploadKey} with filesize ${fileContent.length}`)
+    return s3Client
     .send(
       new PutObjectCommand({
         Body: fileContent,
         Bucket: bucket,
-        Key: "original/" + key,
+        Key: uploadKey,
       })
     )
     .then((putObjectResponse) => {
