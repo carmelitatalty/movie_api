@@ -474,7 +474,7 @@ app.post(
       try {
         aws_s3.upload(key, tempPath).then(getObjectCommandOutput => {
           console.log(JSON.stringify(getObjectCommandOutput));
-          res.send({ s3Response: putObjectResponse, key: key });
+          res.send({ s3Response: getObjectCommandOutput, key: key });
         })
         // s3Client
         //   .send(
