@@ -443,7 +443,7 @@ app.get("/images", (req, res) => {
 app.post(
   "/images",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
+  async (req, res) => {
     res.set(
       "Access-Control-Allow-Origin",
       "http://2-6-frontend.s3-website-us-west-2.amazonaws.com"
@@ -459,56 +459,72 @@ app.post(
     const key = uuidv4() + ".jpg";
 
     console.log(`Uploading file: ${tempPath}`);
-    file.mv(tempPath, (err) => {
-      if (err) {
-        console.log(err);
-        res.status(500);
-        return;
-      }
+    try {
+      await file.mv(tempPath)
+      
       console.log(`File uploaded to temp location ${tempPath}`);
 
       const fileContent = fs.readFileSync(tempPath);
       console.log(
         `Uploading file ${tempPath} with size ${fileContent.length} to ${BUCKET_NAME} as key ${key}`
       );
-      aws_s3.put(fileContent, BUCKET_NAME, key, res)
-      // fs.readFile(tempPath, (err, buffer) => {
-      //   if (err) {
-      //     console.log(err)
-      //     res.status(500).send(err);
-      //   }
-      //   else {
-      //     console.log('Putting file to AWS S3')
-      //     aws_s3.put(buffer, BUCKET_NAME, key, res)
-      //   }
-      // })
+      await aws_s3.put(fileContent, BUCKET_NAME, key, res)
+    } catch (e) {
+      console.log(err);
+      res.status(500).send(err);
+    }
 
-    //   try {
-    //     // aws_s3.upload(`original/${key}`, BUCKET_NAME , tempPath).then(getObjectCommandOutput => {
-    //     //   console.log(JSON.stringify(getObjectCommandOutput));
-    //     //   res.send({ s3Response: getObjectCommandOutput, key: key });
-    //     // })
-    //     s3Client
-    //       .send(
-    //         new PutObjectCommand({
-    //           Body: fileContent,
-    //           Bucket: BUCKET_NAME,
-    //           Key: "original/" + key,
-    //         })
-    //       )
-    //       .then((putObjectResponse) => {
-    //         console.log(JSON.stringify(putObjectResponse));
-    //         res.send({ s3Response: putObjectResponse, key: key });
-    //       })
-    //       .catch((e) => {
-    //         console.log(e);
-    //         res.status(500).send(e.message);
-    //       });
-    //   } catch (e) {
-    //     console.log(e);
-    //     res.status(500).send(e.message);
+
+    // file.mv(tempPath, async (err) => {
+    //   if (err) {
+    //     console.log(err);
+    //     res.status(500);
+    //     return;
     //   }
-    });
+    //   console.log(`File uploaded to temp location ${tempPath}`);
+
+    //   const fileContent = fs.readFileSync(tempPath);
+    //   console.log(
+    //     `Uploading file ${tempPath} with size ${fileContent.length} to ${BUCKET_NAME} as key ${key}`
+    //   );
+    //   await aws_s3.put(fileContent, BUCKET_NAME, key, res)
+    //   // fs.readFile(tempPath, (err, buffer) => {
+    //   //   if (err) {
+    //   //     console.log(err)
+    //   //     res.status(500).send(err);
+    //   //   }
+    //   //   else {
+    //   //     console.log('Putting file to AWS S3')
+    //   //     aws_s3.put(buffer, BUCKET_NAME, key, res)
+    //   //   }
+    //   // })
+
+    // //   try {
+    // //     // aws_s3.upload(`original/${key}`, BUCKET_NAME , tempPath).then(getObjectCommandOutput => {
+    // //     //   console.log(JSON.stringify(getObjectCommandOutput));
+    // //     //   res.send({ s3Response: getObjectCommandOutput, key: key });
+    // //     // })
+    // //     s3Client
+    // //       .send(
+    // //         new PutObjectCommand({
+    // //           Body: fileContent,
+    // //           Bucket: BUCKET_NAME,
+    // //           Key: "original/" + key,
+    // //         })
+    // //       )
+    // //       .then((putObjectResponse) => {
+    // //         console.log(JSON.stringify(putObjectResponse));
+    // //         res.send({ s3Response: putObjectResponse, key: key });
+    // //       })
+    // //       .catch((e) => {
+    // //         console.log(e);
+    // //         res.status(500).send(e.message);
+    // //       });
+    // //   } catch (e) {
+    // //     console.log(e);
+    // //     res.status(500).send(e.message);
+    // //   }
+    // });
   }
 );
 
