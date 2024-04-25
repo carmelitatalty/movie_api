@@ -14,7 +14,10 @@ const {
 //   };
   
    const upload = async (key, bucketName, tempPath) => {
-    const s3Client = new S3Client({});
+    console.log(`Uploading ${tempPath} to ${bucketName} as ${key}`)
+    const s3Client = new S3Client({
+        region: "us-west-2",
+    });
     // const bucketName = "test-bucket";
     // const str = createString();
     // const buffer = Buffer.from(str, "utf8");
