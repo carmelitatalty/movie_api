@@ -39,7 +39,7 @@ const s3Client = new S3Client({
       });
   
       uploadId = multipartUpload.UploadId;
-      console.log(`UploadId: ${uploadID}`)
+      console.log(`UploadId: ${uploadId}`)
   
       const uploadPromises = [];
       // Multipart uploads require a minimum size of 5 MB per part.

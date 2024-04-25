@@ -15,4 +15,4 @@ aws_s3
     console.log(JSON.stringify(result));
   });
 
-aws_s3.uploadImage(FILE_NAME, BUCKET_NAME, "upload-image-dune-temp.jpg", null);
+// aws_s3.uploadImage(FILE_NAME, BUCKET_NAME, "upload-image-dune-temp.jpg", null);
