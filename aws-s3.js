@@ -114,7 +114,7 @@ const s3Client = new S3Client({
     };
     
     // Upload the file to S3
-    s3.upload(params, (err, data) => {
+    s3Client.upload(params, (err, data) => {
         if (err) {
             console.log('Error uploading file:', err);
             if (res) {
