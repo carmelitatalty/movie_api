@@ -12,7 +12,7 @@ const {
 //     return "x".repeat(size);
 //   };
   
-   const upload = async (key, fileName) => {
+   const upload = async (key, tempPath) => {
     const s3Client = new S3Client({});
     const bucketName = "test-bucket";
     const str = createString();
@@ -90,6 +90,6 @@ const {
     }
   };
   
-  module.exports = () => {
-    return upload
+  module.exports = {
+    upload
   }
