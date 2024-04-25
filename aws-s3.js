@@ -5,6 +5,7 @@ const {
     AbortMultipartUploadCommand,
     S3Client,
   } = require("@aws-sdk/client-s3");
+  const fs = require("fs")
   
   const twentyFiveMB = 25 * 1024 * 1024;
   
