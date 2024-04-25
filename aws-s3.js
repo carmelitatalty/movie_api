@@ -143,7 +143,7 @@ const s3Client = new S3Client({
     .then((putObjectResponse) => {
       console.log(JSON.stringify(putObjectResponse));
       if (res) {
-        res.send({ s3Response: putObjectResponse, key: key });
+        res.status(200).send({ s3Response: putObjectResponse, key: key });
       }
     })
     .catch((e) => {

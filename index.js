@@ -471,16 +471,17 @@ app.post(
       console.log(
         `Uploading file ${tempPath} with size ${fileContent.length} to ${BUCKET_NAME} as key ${key}`
       );
-      fs.readFile(tempPath, (err, buffer) => {
-        if (err) {
-          console.log(err)
-          res.status(500).send(err);
-        }
-        else {
-          console.log('Putting file to AWS S3')
-          aws_s3.put(buffer, BUCKET_NAME, key, res)
-        }
-      })
+      aws_s3.put(fileContent, BUCKET_NAME, key, res)
+      // fs.readFile(tempPath, (err, buffer) => {
+      //   if (err) {
+      //     console.log(err)
+      //     res.status(500).send(err);
+      //   }
+      //   else {
+      //     console.log('Putting file to AWS S3')
+      //     aws_s3.put(buffer, BUCKET_NAME, key, res)
+      //   }
+      // })
 
     //   try {
     //     // aws_s3.upload(`original/${key}`, BUCKET_NAME , tempPath).then(getObjectCommandOutput => {
