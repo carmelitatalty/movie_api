@@ -31,9 +31,13 @@ const {
           Bucket: bucketName,
           Key: key,
         }),
-      );
+      ).catch(e => {
+        console.log('Could not create multiparet upload')
+        console.log(e)
+      });
   
       uploadId = multipartUpload.UploadId;
+      console.log(`UploadId: ${uploadID}`)
   
       const uploadPromises = [];
       // Multipart uploads require a minimum size of 5 MB per part.
@@ -57,6 +61,10 @@ const {
             .then((d) => {
               console.log("Part", i + 1, "uploaded");
               return d;
+            }).error(e => {
+                console.log('Error uploading part')
+                console.log(e)
+                return e
             }),
         );
       }
@@ -90,6 +98,7 @@ const {
         });
   
         await s3Client.send(abortCommand);
+        return err;
       }
     }
   };
