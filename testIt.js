@@ -9,10 +9,10 @@ aws_s3.put(fileContent, BUCKET_NAME, "put-dune-temp.jpg", null).then(() => {
   console.log(`Finished put`);
 });
 
-aws_s3
-  .upload("upload-dune-temp.jpg", BUCKET_NAME, FILE_NAME)
-  .then((result) => {
-    console.log(JSON.stringify(result));
-  });
+// aws_s3
+//   .upload("upload-dune-temp.jpg", BUCKET_NAME, FILE_NAME)
+//   .then((result) => {
+//     console.log(JSON.stringify(result));
+//   });
 
 // aws_s3.uploadImage(FILE_NAME, BUCKET_NAME, "upload-image-dune-temp.jpg", null);
