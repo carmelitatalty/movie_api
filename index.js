@@ -471,31 +471,40 @@ app.post(
       console.log(
         `Uploading file ${tempPath} with size ${fileContent.length} to ${BUCKET_NAME} as key ${key}`
       );
-      try {
-        // aws_s3.upload(`original/${key}`, BUCKET_NAME , tempPath).then(getObjectCommandOutput => {
-        //   console.log(JSON.stringify(getObjectCommandOutput));
-        //   res.send({ s3Response: getObjectCommandOutput, key: key });
-        // })
-        s3Client
-          .send(
-            new PutObjectCommand({
-              Body: fileContent,
-              Bucket: BUCKET_NAME,
-              Key: "original/" + key,
-            })
-          )
-          .then((putObjectResponse) => {
-            console.log(JSON.stringify(putObjectResponse));
-            res.send({ s3Response: putObjectResponse, key: key });
-          })
-          .catch((e) => {
-            console.log(e);
-            res.status(500).send(e.message);
-          });
-      } catch (e) {
-        console.log(e);
-        res.status(500).send(e.message);
-      }
+      fs.readFile(tempPath, (err, buffer) => {
+        if (err) {
+          console.log(err)
+          res.status(500).send(err);
+        }
+        else {
+          aws_s3.put(buffer, BUCKET_NAME, key, res)
+        }
+      })
+    //   try {
+    //     // aws_s3.upload(`original/${key}`, BUCKET_NAME , tempPath).then(getObjectCommandOutput => {
+    //     //   console.log(JSON.stringify(getObjectCommandOutput));
+    //     //   res.send({ s3Response: getObjectCommandOutput, key: key });
+    //     // })
+    //     s3Client
+    //       .send(
+    //         new PutObjectCommand({
+    //           Body: fileContent,
+    //           Bucket: BUCKET_NAME,
+    //           Key: "original/" + key,
+    //         })
+    //       )
+    //       .then((putObjectResponse) => {
+    //         console.log(JSON.stringify(putObjectResponse));
+    //         res.send({ s3Response: putObjectResponse, key: key });
+    //       })
+    //       .catch((e) => {
+    //         console.log(e);
+    //         res.status(500).send(e.message);
+    //       });
+    //   } catch (e) {
+    //     console.log(e);
+    //     res.status(500).send(e.message);
+    //   }
     });
   }
 );

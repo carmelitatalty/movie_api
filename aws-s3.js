@@ -13,11 +13,12 @@ const {
 //     return "x".repeat(size);
 //   };
   
+const s3Client = new S3Client({
+    region: "us-west-2",
+});
+
    const upload = async (key, bucketName, tempPath) => {
     console.log(`Uploading ${tempPath} to ${bucketName} as ${key}`)
-    const s3Client = new S3Client({
-        region: "us-west-2",
-    });
     // const bucketName = "test-bucket";
     // const str = createString();
     // const buffer = Buffer.from(str, "utf8");
@@ -102,7 +103,26 @@ const {
       }
     }
   };
+
+  const put = (fileContent, bucket, key, res) => {
+    s3Client
+    .send(
+      new PutObjectCommand({
+        Body: fileContent,
+        Bucket: bucket,
+        Key: "original/" + key,
+      })
+    )
+    .then((putObjectResponse) => {
+      console.log(JSON.stringify(putObjectResponse));
+      res.send({ s3Response: putObjectResponse, key: key });
+    })
+    .catch((e) => {
+      console.log(e);
+      res.status(500).send(e.message);
+    });
+  }
   
   module.exports = {
-    upload
+    upload, put
   }
