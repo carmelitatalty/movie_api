@@ -3,6 +3,7 @@ const {
     UploadPartCommand,
     CompleteMultipartUploadCommand,
     AbortMultipartUploadCommand,
+    PutObjectCommand,
     S3Client,
   } = require("@aws-sdk/client-s3");
   const fs = require("fs")
