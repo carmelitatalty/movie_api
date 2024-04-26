@@ -57,7 +57,7 @@ const uploadViaService = async () => {
   const body = new FormData();
   // const blob = new Blob([await readFile(FILE_NAME)]);
   const blob = new Blob([fileContent]);
-  const file = new File(blob, FILE_NAME)
+  const file = new File(fileContent, FILE_NAME)
   // body.set("image", blob, FILE_NAME);
   // body.set("name", FILE_NAME)
   formData.append('image', file);
