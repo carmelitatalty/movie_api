@@ -19,8 +19,8 @@ const uploadViaService = async () => {
         Username: 'user24',
         Password: 'myPassword'
     }})
-    console.log(JSON.stringify(loginResponse))
     console.log(loginResponse)
+    console.log(JSON.stringify(loginResponse.body))
     
     const token = loginResponse.token;
     
