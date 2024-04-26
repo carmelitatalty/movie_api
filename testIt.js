@@ -19,11 +19,11 @@ const EMAIL = 'email@email.com'
 const createUser = async() => {
   const createUserResponse = await fetch(`http://localhost/api/users`, {
     method: 'POST',
-    body: {
+    body: JSON.stringify({
       Username: USERNAME,
       Password: PASSWORD,
       Email: EMAIL
-    }
+    })
   })
   if (createUserResponse.ok) {
     console.log(await createUserResponse.json())
