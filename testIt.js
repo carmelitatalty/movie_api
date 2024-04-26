@@ -60,7 +60,7 @@ const uploadViaService = async () => {
   const file = new File(fileContent, FILE_NAME)
   // body.set("image", blob, FILE_NAME);
   // body.set("name", FILE_NAME)
-  formData.append('image', file);
+  body.append('image', file);
 
   const resp = await fetch("http://localhost/api/images", {
     method: "POST",
