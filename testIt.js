@@ -22,7 +22,7 @@ const uploadViaService = async () => {
     console.log(loginResponse)
     console.log(JSON.stringify(loginResponse.body))
     
-    const token = loginResponse.token;
+    const token = loginResponse.body.token;
     
     // const fileName = "./sample.txt";
     const body = new FormData();
