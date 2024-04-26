@@ -45,7 +45,9 @@ const uploadViaService = async () => {
       );
       console.log("RAW BODY:", await resp.text());
 }
-uploadViaService().then(() => "Done uploading via service")
+await uploadViaService()
+console.log("Done uploading via service")
+// uploadViaService().then(() => "Done uploading via service")
 // aws_s3
 //   .upload("upload-dune-temp.jpg", BUCKET_NAME, FILE_NAME)
 //   .then((result) => {
