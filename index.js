@@ -23,6 +23,12 @@ const { v4: uuidv4 } = require("uuid");
 const BUCKET_NAME = "2-6-images";
 
 const app = express();
+// logger middleware
+app.use((req,res,next) =>{
+  req.time = new Date(Date.now()).toString();
+  console.log(req.method,req.hostname, req.path, req.time);
+  next();
+});
 app.use(express.json({ limit: "10mb", extended: true }));
 app.use(
   express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 })
