@@ -3,7 +3,7 @@ const fs = require("fs");
 
 
 // import { readFile } from "node:fs/promises";
-const readFile = require("node:fs/promises")
+// const readFile = require("node:fs/promises")
 
 const BUCKET_NAME = "2-6-images";
 const FILE_NAME = "/tmp/dune.jpg";
@@ -24,7 +24,7 @@ const uploadViaService = async () => {
     
     // const fileName = "./sample.txt";
     const body = new FormData();
-    const blob = new Blob([await readFile(FILE_NAME)]);
+    const blob = new Blob([await fs.readFile(FILE_NAME)]);
     
     body.set("image", blob, FILE_NAME);
     
