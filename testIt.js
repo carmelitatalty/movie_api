@@ -1,3 +1,4 @@
+const { File } = require("buffer");
 const aws_s3 = require("./aws-s3.js");
 const fs = require("fs");
 const readFile = require("node:fs/promises");
@@ -54,10 +55,12 @@ const uploadViaService = async () => {
 
   // const fileName = "./sample.txt";
   const body = new FormData();
-  const blob = new Blob([await readFile(FILE_NAME)]);
-  // const blob = new Blob([fileContent]);
-
-  body.set("image", blob, FILE_NAME);
+  // const blob = new Blob([await readFile(FILE_NAME)]);
+  const blob = new Blob([fileContent]);
+  const file = new File(blob, FILE_NAME)
+  // body.set("image", blob, FILE_NAME);
+  // body.set("name", FILE_NAME)
+  formData.append('image', file);
 
   const resp = await fetch("http://localhost/api/images", {
     method: "POST",
