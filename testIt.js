@@ -20,9 +20,10 @@ const uploadViaService = async () => {
         Password: 'myPassword'
     }})
     console.log(loginResponse)
-    console.log(JSON.stringify(loginResponse.body))
+    const responseBody = await loginResponse.json();
+    console.log(JSON.stringify(responseBody))
     
-    const token = loginResponse.body.token;
+    const token = responseBody.body.token;
     
     // const fileName = "./sample.txt";
     const body = new FormData();
