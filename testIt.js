@@ -38,7 +38,7 @@ const createUser = async () => {
 
 const uploadViaService = async () => {
   console.log("Uploading via service");
-  const loginResponse = await fetch("http://localhost/api/login", {
+  const loginResponse = await fetch(`http://localhost/api/login?Username=${USERNAME}&Password=${PASSWORD}`, {
     method: "POST",
     body: {
       Username: USERNAME,
@@ -76,9 +76,9 @@ const uploadViaService = async () => {
 };
 // await uploadViaService()
 // console.log("Done uploading via service")
-createUser().then(() => {
+// createUser().then(() => {
   uploadViaService().then(() => console.log("Done uploading via service"));
-});
+// });
 // aws_s3
 //   .upload("upload-dune-temp.jpg", BUCKET_NAME, FILE_NAME)
 //   .then((result) => {
