@@ -16,7 +16,7 @@ const {
   
 const s3Client = new S3Client({
     region: "us-west-2",
-    requestHandler
+    
 });
 
    const upload = async (key, bucketName, tempPath) => {
