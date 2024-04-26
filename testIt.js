@@ -1,5 +1,6 @@
 const aws_s3 = require("./aws-s3.js");
 const fs = require("fs");
+const readFile = require("node:fs/promises");
 
 // import { readFile } from "node:fs/promises";
 // const readFile = require("node:fs/promises")
@@ -53,7 +54,7 @@ const uploadViaService = async () => {
 
   // const fileName = "./sample.txt";
   const body = new FormData();
-  const blob = new Blob([await fs.readFile(FILE_NAME)]);
+  const blob = new Blob([await readFile(FILE_NAME)]);
   // const blob = new Blob([fileContent]);
 
   body.set("image", blob, FILE_NAME);
