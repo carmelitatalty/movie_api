@@ -7,7 +7,7 @@ const readFile = require("node:fs/promises");
 // const readFile = require("node:fs/promises")
 
 const BUCKET_NAME = "2-6-images";
-const FILE_NAME = "/tmp/dune.jpg";
+const FILE_NAME = "~/dune.jpg";
 // aws_s3.uploadImage('/tmp/dune.jpg', '2-6-images', 'dune-temp.jpg', null)
 const fileContent = fs.readFileSync(FILE_NAME);
 // aws_s3.put(fileContent, BUCKET_NAME, "put-dune-temp.jpg", null).then(() => {
