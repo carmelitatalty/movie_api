@@ -29,6 +29,7 @@ const createUser = async() => {
     console.log(await createUserResponse.json())
   } else {
     console.log(`Response not ok ${createUserResponse.status}`)
+    console.log(await createUserResponse.text())
   }
   
 }
