@@ -1,6 +1,10 @@
 const aws_s3 = require("./aws-s3.js");
 const fs = require("fs");
 
+
+// import { readFile } from "node:fs/promises";
+const readFile = require("node:fs/promises")
+
 const BUCKET_NAME = "2-6-images";
 const FILE_NAME = "/tmp/dune.jpg";
 // aws_s3.uploadImage('/tmp/dune.jpg', '2-6-images', 'dune-temp.jpg', null)
@@ -9,36 +13,38 @@ aws_s3.put(fileContent, BUCKET_NAME, "put-dune-temp.jpg", null).then(() => {
   console.log(`Finished put`);
 });
 
-const loginResponse = await fetch("http://localhost/api/login", {method: "POST", body: {
-    Username: 'user24',
-    Password: 'myPassword'
-}})
+const uploadViaService = async () => {
+    const loginResponse = fetch("http://localhost/api/login", {method: "POST", body: {
+        Username: 'user24',
+        Password: 'myPassword'
+    }})
 
-const token = loginResponse.token;
-
-import { readFile } from "node:fs/promises";
-
-// const fileName = "./sample.txt";
-const body = new FormData();
-const blob = new Blob([await readFile(FILE_NAME)]);
-
-body.set("image", blob, FILE_NAME);
-
-const resp = await fetch("http://localhost/api/images", {
-  method: "POST",
-  body,
-  headers: {
-    Authorization: 'Bearer ' + token,
-  }
-});
-
-console.log(
-    "STATUS:",
-    resp.status,
-    "\nCONTENT TYPE:",
-    resp.headers.get("content-type"),
-  );
-  console.log("RAW BODY:", await resp.text());
+    
+    const token = loginResponse.token;
+    
+    // const fileName = "./sample.txt";
+    const body = new FormData();
+    const blob = new Blob([await readFile(FILE_NAME)]);
+    
+    body.set("image", blob, FILE_NAME);
+    
+    const resp = await fetch("http://localhost/api/images", {
+      method: "POST",
+      body,
+      headers: {
+        Authorization: 'Bearer ' + token,
+      }
+    });
+    
+    console.log(
+        "STATUS:",
+        resp.status,
+        "\nCONTENT TYPE:",
+        resp.headers.get("content-type"),
+      );
+      console.log("RAW BODY:", await resp.text());
+}
+uploadViaService().then(() => "Done uploading via service")
 // aws_s3
 //   .upload("upload-dune-temp.jpg", BUCKET_NAME, FILE_NAME)
 //   .then((result) => {
