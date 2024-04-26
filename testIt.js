@@ -14,7 +14,7 @@ aws_s3.put(fileContent, BUCKET_NAME, "put-dune-temp.jpg", null).then(() => {
 });
 
 const uploadViaService = async () => {
-    const loginResponse = fetch("http://localhost/api/login", {method: "POST", body: {
+    const loginResponse = await fetch("http://localhost/api/login", {method: "POST", body: {
         Username: 'user24',
         Password: 'myPassword'
     }})
