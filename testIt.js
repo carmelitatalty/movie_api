@@ -24,7 +24,8 @@ const uploadViaService = async () => {
     
     // const fileName = "./sample.txt";
     const body = new FormData();
-    const blob = new Blob([await fs.readFile(FILE_NAME)]);
+    // const blob = new Blob([await fs.readFile(FILE_NAME)]);
+    const blob = new Blob([fileContent])
     
     body.set("image", blob, FILE_NAME);
     
