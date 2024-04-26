@@ -17,7 +17,7 @@ const PASSWORD = 'password';
 const EMAIL = 'email@email.com'
 
 const createUser = async() => {
-  const createUserResponse = await fetch("http://localhost/api/users", {
+  const createUserResponse = await fetch(`http://localhost/api/users?Username=${USERNAME}`, {
     method: 'PUT',
     body: {
       Username: USERNAME,
@@ -25,7 +25,12 @@ const createUser = async() => {
       Email: EMAIL
     }
   })
-  console.log(await createUserResponse.json())
+  if (createUserResponse.ok) {
+    console.log(await createUserResponse.json())
+  } else {
+    console.log(`Response not ok ${createUserResponse.status}`)
+  }
+  
 }
 
 const uploadViaService = async () => {
