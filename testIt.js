@@ -12,12 +12,27 @@ const fileContent = fs.readFileSync(FILE_NAME);
 // aws_s3.put(fileContent, BUCKET_NAME, "put-dune-temp.jpg", null).then(() => {
 //   console.log(`Finished put`);
 // });
+const USERNAME = 'user20';
+const PASSWORD = 'password';
+const EMAIL = 'email@email.com'
+
+const createUser = async() => {
+  const createUserResponse = await fetch("http://localhost/api/users", {
+    method: 'PUT',
+    body: {
+      Username: USERNAME,
+      Password: PASSWORD,
+      Email: EMAIL
+    }
+  })
+  console.log(await createUserResponse.json())
+}
 
 const uploadViaService = async () => {
     console.log('Uploading via service')
     const loginResponse = await fetch("http://localhost/api/login", {method: "POST", body: {
-        Username: 'user24',
-        Password: 'myPassword'
+        Username: USERNAME,
+        Password: PASSWORD
     }})
     console.log(loginResponse)
     const responseBody = await loginResponse.json();
@@ -50,7 +65,7 @@ const uploadViaService = async () => {
 }
 // await uploadViaService()
 // console.log("Done uploading via service")
-uploadViaService().then(() => console.log("Done uploading via service"))
+createUser().then(() => {uploadViaService().then(() => console.log("Done uploading via service"))})
 // aws_s3
 //   .upload("upload-dune-temp.jpg", BUCKET_NAME, FILE_NAME)
 //   .then((result) => {
