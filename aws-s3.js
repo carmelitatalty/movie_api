@@ -16,6 +16,7 @@ const {
   
 const s3Client = new S3Client({
     region: "us-west-2",
+    requestHandler
 });
 
    const upload = async (key, bucketName, tempPath) => {
@@ -129,7 +130,7 @@ const s3Client = new S3Client({
     });
   }
 
-  const put = (fileContent, bucket, key, res) => {
+  const put = async (fileContent, bucket, key, res) => {
     const uploadKey = `original/${key}`
     console.log(`Putting file to S3 bucket ${bucket} with key ${uploadKey} with filesize ${fileContent.length}`)
     return s3Client

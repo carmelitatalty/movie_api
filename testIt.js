@@ -9,6 +9,36 @@ aws_s3.put(fileContent, BUCKET_NAME, "put-dune-temp.jpg", null).then(() => {
   console.log(`Finished put`);
 });
 
+const loginResponse = await fetch("http://localhost/api/login", {method: "POST", body: {
+    Username: 'user24',
+    Password: 'myPassword'
+}})
+
+const token = loginResponse.token;
+
+import { readFile } from "node:fs/promises";
+
+// const fileName = "./sample.txt";
+const body = new FormData();
+const blob = new Blob([await readFile(FILE_NAME)]);
+
+body.set("image", blob, FILE_NAME);
+
+const resp = await fetch("http://localhost/api/images", {
+  method: "POST",
+  body,
+  headers: {
+    Authorization: 'Bearer ' + token,
+  }
+});
+
+console.log(
+    "STATUS:",
+    resp.status,
+    "\nCONTENT TYPE:",
+    resp.headers.get("content-type"),
+  );
+  console.log("RAW BODY:", await resp.text());
 // aws_s3
 //   .upload("upload-dune-temp.jpg", BUCKET_NAME, FILE_NAME)
 //   .then((result) => {
