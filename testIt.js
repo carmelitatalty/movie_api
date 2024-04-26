@@ -17,7 +17,7 @@ const PASSWORD = 'password';
 const EMAIL = 'email@email.com'
 
 const createUser = async() => {
-  const createUserResponse = await fetch(`http://localhost/api/users?Username=${USERNAME}`, {
+  const createUserResponse = await fetch(`http://localhost/api/users/Username=${USERNAME}`, {
     method: 'PUT',
     body: {
       Username: USERNAME,
